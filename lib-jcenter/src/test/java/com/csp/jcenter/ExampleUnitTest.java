@@ -1,4 +1,4 @@
-package com.csp.sample.jcenter;
+package com.csp.jcenter;
 
 import org.junit.Test;
 
@@ -10,6 +10,6 @@ import org.junit.Test;
 public class ExampleUnitTest {
     @Test
     public void addition_isCorrect() throws Exception {
-        assertEquals(4, 2 + 2);
+        assert(true);
     }
 }
