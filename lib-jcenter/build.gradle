@@ -1,4 +1,5 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.novoda.bintray-release' // 添加内容
 
 android {
     compileSdkVersion 28
@@ -15,9 +16,36 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+//    // 有人建议追加，但测试后表示无所谓
+//    lintOptions {
+//        abortOnError false
+//    }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.android.support:recyclerview-v7:28.0.0'
+}
+
+// 添加内容
+// 配置说明：https://blog.csdn.net/droyon/article/details/77751033
+publish {
+    // bintrayUser = '' // 不要使用，因为直接执行 gradle 任务有问题，须使用命令行
+    // bintrayKey = '' // 不要使用，同上
+    autoPublish = true
+
+    userOrg = 'jefshi' // 如果上传到组织则用组织名称，如果上传到个人则用 bintray 账户名称
+    repoName = 'maven' // 如果 bintray 上没有此仓库，请先创建，否则无法上传
+    uploadName = 'demo-jcenter-upload' // 同样如果 bintray 上没有此包，请先创建，否则无法上传
+
+    // 引用结果：implementation 'com.csp:demo-jcenter:1.1.0'
+    groupId = 'com.csp'
+    artifactId = 'demo-jcenter'
+    publishVersion = '1.1.0'
+    licences = 'Apache-2.0' // 标识符参考：https://spdx.org/licenses/
+
+    desc = '发布 Library 到 JCenter'
+    website = 'https://github.com/jefshi/demo-jcenter-upload'
+    // issueTracker，如果 website 包含'github.com'，则默认为 '${website}/issues'
 }
