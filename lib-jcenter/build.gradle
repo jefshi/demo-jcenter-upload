@@ -35,6 +35,8 @@ dependencies {
 
 // 添加内容
 // 配置说明：https://blog.csdn.net/droyon/article/details/77751033
+// 使用命令行执行，而不是直接执行 Gradle 任务
+// 命令行：gradlew clean generatePomFileForReleasePublication build bintrayUpload -PbintrayUser=*** -PbintrayKey=*** -PdryRun=false
 publish {
     // bintrayUser = '' // 不要使用，因为直接执行 gradle 任务有问题，须使用命令行
     // bintrayKey = '' // 不要使用，同上
