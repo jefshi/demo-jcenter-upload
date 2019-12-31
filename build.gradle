@@ -7,8 +7,16 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.4.2'
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5' // 添加内容
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4' // 添加内容，与下述 plugins{} 二选一
     }
 }
+
+// 添加内容
+// 只能使用在根 build
+// plugins {
+//     id "com.jfrog.bintray" version "1.8.4"
+// }
 
 allprojects {
     repositories {
