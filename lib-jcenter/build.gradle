@@ -46,7 +46,7 @@ publish {
     repoName = 'maven' // 如果 bintray 上没有此仓库，请先创建，否则无法上传
     uploadName = 'demo-jcenter-upload' // 同样如果 bintray 上没有此包，请先创建，否则无法上传
 
-    // 引用结果：implementation 'com.csp:demo-jcenter:1.1.0'
+    // 引用结果：implementation 'groupId:artifactId:publishVersion'
     groupId = 'com.csp'
     artifactId = 'demo-jcenter'
     publishVersion = '1.1.0'
