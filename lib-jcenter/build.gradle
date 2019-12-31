@@ -1,4 +1,6 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.jfrog.bintray' // 添加内容
+apply plugin: 'com.github.dcendents.android-maven' // 添加内容
 
 android {
     compileSdkVersion 28
@@ -25,4 +27,98 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+}
+
+// 添加内容
+group = 'com.csp' // 必要，用于执行 gradle 的 bintrayUpload
+version = '1.1.0'
+
+bintray {
+    user = project.hasProperty('bintrayUser') ? project.property('bintrayUser') : System.getenv('BINTRAY_USER')
+    key = project.hasProperty('bintrayApiKey') ? project.property('bintrayApiKey') : System.getenv('BINTRAY_API_KEY')
+    configurations = ['archives']
+    pkg {
+        repo = 'maven'
+        name = 'demo-jcenter-upload' // 显示在 bintray 的名称
+        userOrg = user // 如果上传到组织则用组织名称，如果上传到个人则用 bintray 账户名称
+        licenses = ['Apache-2.0']
+        vcsUrl = 'https://github.com/jefshi/demo-jcenter-upload'
+        // 开发环境是 debian 时，加
+        // debian {
+        //     distribution = 'squeeze'
+        //     component = 'main'
+        //     architecture = 'i386,noarch,amd64'
+        // }
+
+//        version {
+//            name = '1.0-Final'
+//            desc = 'Gradle Bintray Plugin 1.0 final'
+//            released  = new Date()
+//            vcsTag = '1.3.0'
+//            attributes = ['gradle-plugin': 'com.use.less:com.use.less.gradle:gradle-useless-plugin']
+//        }
+    }
+}
+
+// 用于生成 maven 包
+install {
+    repositories.mavenInstaller {
+        pom.project {
+            // name 'adapter' // ？？？
+            // description 'maven_upload'
+            // url 'https://github.com/googlesamples/easygoogle'
+            // inceptionYear '2015'
+
+            packaging 'aar'
+            groupId project.group
+            artifactId 'adapter-recyclerview'
+            version project.version
+
+//            licenses {
+//                license {
+//                    name 'The Apache Software License, Version 2.0'
+//                    url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+//                    // distribution 'repo'
+//                }
+//            }
+//            scm {
+//                connection 'https://github.com/googlesamples/easygoogle.git'
+//                url 'https://github.com/googlesamples/easygoogle'
+//            }
+//            developers {
+//                developer {
+//                    name 'csp'
+//                }
+//            }
+        }
+    }
+}
+
+// sourcesJar、javadocJar
+task sourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier = 'sources'
+}
+task javadoc(type: Javadoc) {
+    failOnError false //必须添加以免出错
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+}
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+artifacts {
+    archives javadocJar
+    archives sourcesJar
+}
+javadoc {
+    options {
+        //如果你的项目里面有中文注释的话，必须将格式设置为UTF-8，不然会出现乱码
+        encoding "UTF-8"
+        charSet 'UTF-8'
+        author true
+        version true
+        links "http://docs.oracle.com/javase/7/docs/api"
+    }
 }
